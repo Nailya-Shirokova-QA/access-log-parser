@@ -1,37 +1,42 @@
+import java.io.File;
 import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
-        // Создаем сканер для чтения ввода из консоли
         Scanner scanner = new Scanner(System.in);
+        int fileCount = 0;
 
-        // Получаем первое число
-        System.out.println("Введите первое число:");
-        int firstNumber = scanner.nextInt();
+        while (true) {
+            System.out.println("Введите путь к файлу (или 'exit' для выхода):");
+            String path = scanner.nextLine();
 
-        // Получаем второе число
-        System.out.println("Введите второе число:");
-        int secondNumber = scanner.nextInt();
+            // Проверка на команду выхода
+            if (path.equalsIgnoreCase("exit")) {
+                System.out.println("Программа завершена.");
+                break;
+            }
 
-        // Вычисляем сумму
-        int sum = firstNumber + secondNumber;
+            File file = new File(path);
+            boolean fileExists = file.exists();
+            boolean isDirectory = file.isDirectory();
 
-        // Вычисляем разность
-        int difference = firstNumber - secondNumber;
+            // Проверка существования файла и что это не папка
+            if (!fileExists || isDirectory) {
+                if (!fileExists) {
+                    System.out.println("Файл не существует.");
+                }
+                if (isDirectory) {
+                    System.out.println("Указанный путь ведет к папке, а не к файлу.");
+                }
+                continue; // Продолжаем цикл
+            }
 
-        // Вычисляем произведение
-        int product = firstNumber * secondNumber;
+            // Если файл существует и это именно файл
+            System.out.println("Путь указан верно");
+            fileCount++;
+            System.out.println("Это файл номер " + fileCount);
+        }
 
-        // Вычисляем частное (используем double для точности)
-        double quotient = (double) firstNumber / secondNumber;
-
-        // Выводим результаты
-        System.out.println("Сумма: " + sum);
-        System.out.println("Разность: " + difference);
-        System.out.println("Произведение: " + product);
-        System.out.println("Частное: " + quotient);
-
-        // Закрываем сканер (хорошая практика)
         scanner.close();
     }
 }
